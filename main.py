@@ -12,13 +12,10 @@ model = os.getenv("model")
 
 bot = telebot.TeleBot(bot_api)
 
-# Cache bot info at startup to avoid repeated API calls per message
 bot_info = bot.get_me()
 
-# Register commands so they appear in Telegram's command menu
 bot.set_my_commands([
     telebot.types.BotCommand("ask", "Ask the AI a question"),
-    telebot.types.BotCommand("call", "Call the AI (same as /ask)"),
 ])
 
 def is_bot_mentioned(message):
@@ -72,7 +69,7 @@ def build_and_reply(message, user_text):
 
 
 # /ask and /call commands — work in groups even with privacy mode ON
-@bot.message_handler(commands=["ask", "call"])
+@bot.message_handler(commands=["ask"])
 def handle_ask_command(message):
     user_text = message.text.partition(" ")[2].strip()
     build_and_reply(message, user_text)
